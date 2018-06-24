@@ -13,16 +13,16 @@ spec:
       - name: scheduler
         image: gcr.io/agwlkubeflow/mxnet
         imagePullPolicy: IfNotPresent
-        command: ["python", "/mxnet/example/image-classification/train_mnist.py", "--kv-store=dist_async"]
+        command: ["python", "/mxnet/example/image-classification/train_mnist.py", "--kv-store=dist_async", "--num-epochs=1"]
         env:
         - name: DMLC_PS_ROOT_URI
           value: "mx-scheduler"
         - name: DMLC_PS_ROOT_PORT
           value: "9091"
         - name: DMLC_NUM_WORKER
-          value: "1"
+          value: "2"
         - name: DMLC_NUM_SERVER
-          value: "1"
+          value: "2"
         - name: PS_VERBOSE
           value: "2"
         - name: DMLC_USE_KUBERNETES
@@ -58,16 +58,16 @@ spec:
       - name: mx-server-0
         image: gcr.io/agwlkubeflow/mxnet
         imagePullPolicy: IfNotPresent
-        command: ["python", "/mxnet/example/image-classification/train_mnist.py", "--kv-store=dist_async"]
+        command: ["python", "/mxnet/example/image-classification/train_mnist.py", "--kv-store=dist_async", "--num-epochs=1"]
         env:
         - name: DMLC_PS_ROOT_URI
           value: "mx-scheduler"
         - name: DMLC_PS_ROOT_PORT
           value: "9091"
         - name: DMLC_NUM_WORKER
-          value: "1"
+          value: "2"
         - name: DMLC_NUM_SERVER
-          value: "1"
+          value: "2"
         - name: PS_VERBOSE
           value: "1"
         - name: DMLC_USE_KUBERNETES
@@ -76,27 +76,67 @@ spec:
           value: "server"
         - name: DMLC_SERVER_ID
           value: "0"
-      - name: mx-worker-0
+      - name: mx-server-1
         image: gcr.io/agwlkubeflow/mxnet
         imagePullPolicy: IfNotPresent
-        command: ["python", "/mxnet/example/image-classification/train_mnist.py", "--kv-store=dist_async"]
+        command: ["python", "/mxnet/example/image-classification/train_mnist.py", "--kv-store=dist_async", "--num-epochs=1"]
         env:
         - name: DMLC_PS_ROOT_URI
           value: "mx-scheduler"
         - name: DMLC_PS_ROOT_PORT
           value: "9091"
         - name: DMLC_NUM_WORKER
-          value: "1"
+          value: "2"
         - name: DMLC_NUM_SERVER
+          value: "2"
+        - name: PS_VERBOSE
           value: "1"
+        - name: DMLC_USE_KUBERNETES
+          value: "1"
+        - name: DMLC_ROLE
+          value: "server"
+        - name: DMLC_SERVER_ID
+          value: "1"
+      - name: mx-worker-0
+        image: gcr.io/agwlkubeflow/mxnet
+        imagePullPolicy: IfNotPresent
+        command: ["python", "/mxnet/example/image-classification/train_mnist.py", "--kv-store=dist_async", "--num-epochs=1"]
+        env:
+        - name: DMLC_PS_ROOT_URI
+          value: "mx-scheduler"
+        - name: DMLC_PS_ROOT_PORT
+          value: "9091"
+        - name: DMLC_NUM_WORKER
+          value: "2"
+        - name: DMLC_NUM_SERVER
+          value: "2"
         - name: PS_VERBOSE
           value: "2"
         - name: DMLC_USE_KUBERNETES
           value: "1"
         - name: DMLC_ROLE
           value: "worker"
-        - name: DMLC_SERVER_ID
-          value: "0"
         - name: DMLC_WORKER_ID
           value: "0"
+      - name: mx-worker-1
+        image: gcr.io/agwlkubeflow/mxnet
+        imagePullPolicy: IfNotPresent
+        command: ["python", "/mxnet/example/image-classification/train_mnist.py", "--kv-store=dist_async", "--num-epochs=1"]
+        env:
+        - name: DMLC_PS_ROOT_URI
+          value: "mx-scheduler"
+        - name: DMLC_PS_ROOT_PORT
+          value: "9091"
+        - name: DMLC_NUM_WORKER
+          value: "2"
+        - name: DMLC_NUM_SERVER
+          value: "2"
+        - name: PS_VERBOSE
+          value: "2"
+        - name: DMLC_USE_KUBERNETES
+          value: "1"
+        - name: DMLC_ROLE
+          value: "worker"
+        - name: DMLC_WORKER_ID
+          value: "1"
       restartPolicy: OnFailure
