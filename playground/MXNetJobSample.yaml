@@ -1,0 +1,30 @@
+apiVersion: "kubeflow.org/v1alpha2"
+kind: "MXNETJob"
+metadata:
+  name: "mnist"
+spec:
+  mxReplicaSpecs:
+    scheduler:
+      replicas: 1
+      template:
+        spec:
+          containers:
+          - name: mx-scheduler
+            image: gcr.io/agwlkubeflow/mxnet
+            command: ["python", "/mxnet/example/image-classification/train_mnist.py", "--kv-store=dist_async", "--num-epochs=1"]
+    server:
+      replicas: 1
+      template:
+        spec:
+          containers:
+          - name: mx-scheduler
+            image: gcr.io/agwlkubeflow/mxnet
+            command: ["python", "/mxnet/example/image-classification/train_mnist.py", "--kv-store=dist_async", "--num-epochs=1"]
+    ps:
+      replicas: 1
+      template:
+        spec:
+          containers:
+          - name: mx-scheduler
+            image: gcr.io/agwlkubeflow/mxnet
+            command: ["python", "/mxnet/example/image-classification/train_mnist.py", "--kv-store=dist_async", "--num-epochs=1"]
